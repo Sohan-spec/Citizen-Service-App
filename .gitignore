@@ -29,3 +29,9 @@ local.properties
 # Local IDE and service configuration
 /.vscode/mcp.json
 /app/google-services.json
+/app/src/google-services.json
+
+# Environment files with local secrets
+.env
+.env.*
+!.env.example

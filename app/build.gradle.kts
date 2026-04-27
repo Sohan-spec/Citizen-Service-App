@@ -3,6 +3,26 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+val envVars = mutableMapOf<String, String>()
+val envFile = rootProject.file(".env")
+if (envFile.exists()) {
+    envFile.readLines().forEach { rawLine ->
+        val line = rawLine.trim()
+        if (line.isEmpty() || line.startsWith("#")) {
+            return@forEach
+        }
+
+        val separatorIndex = line.indexOf("=")
+        if (separatorIndex <= 0) {
+            return@forEach
+        }
+
+        val key = line.substring(0, separatorIndex).trim()
+        val value = line.substring(separatorIndex + 1).trim().removeSurrounding("\"")
+        envVars[key] = value
+    }
+}
+
 android {
     namespace = "com.sohanreddy.caci"
     compileSdk {
@@ -19,6 +39,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val mapsApiKey = envVars["GOOGLE_MAPS_API_KEY"] ?: ""
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {

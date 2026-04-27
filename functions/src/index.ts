@@ -2,6 +2,10 @@ import * as admin from "firebase-admin";
 import {onDocumentWritten} from "firebase-functions/v2/firestore";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {logger} from "firebase-functions";
+import * as dotenv from "dotenv";
+import * as path from "path";
+
+dotenv.config({path: path.resolve(__dirname, "../../.env")});
 
 admin.initializeApp();
 

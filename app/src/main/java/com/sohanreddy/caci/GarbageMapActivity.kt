@@ -1,10 +1,13 @@
 package com.sohanreddy.caci
 
 import android.Manifest
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -57,12 +60,16 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.toolbar.setNavigationOnClickListener { finish() }
 
-        val mapFragment = SupportMapFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.mapContainer, mapFragment)
-            .commitNow()
+        val mapFragment = (supportFragmentManager.findFragmentById(R.id.mapContainer) as? SupportMapFragment)
+            ?: SupportMapFragment.newInstance().also { fragment ->
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.mapContainer, fragment)
+                    .commit()
+            }
 
-        mapFragment.getMapAsync(this)
+        binding.mapContainer.post {
+            mapFragment.getMapAsync(this)
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -160,12 +167,16 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 val map = googleMap ?: return@addSnapshotListener
 
                 if (truckMarker == null) {
+                    val truckIcon = createTruckMarkerIcon()
                     truckMarker = map.addMarker(
                         MarkerOptions()
                             .position(newPosition)
                             .title("$truckId")
                             .snippet("Type: $truckType")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_truck_marker)),
+                            .icon(
+                                truckIcon
+                                    ?: BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
+                            ),
                     )
                     truckMarker?.showInfoWindow()
                 } else {
@@ -175,6 +186,21 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     truckMarker?.showInfoWindow()
                 }
             }
+    }
+
+    private fun createTruckMarkerIcon() = try {
+        val drawable = AppCompatResources.getDrawable(this, R.drawable.ic_truck_marker)
+            ?: return null
+        val width = drawable.intrinsicWidth.takeIf { it > 0 } ?: 96
+        val height = drawable.intrinsicHeight.takeIf { it > 0 } ?: 96
+        drawable.setBounds(0, 0, width, height)
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.draw(canvas)
+        BitmapDescriptorFactory.fromBitmap(bitmap)
+    } catch (_: Exception) {
+        null
     }
 
     override fun onDestroy() {
