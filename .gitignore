@@ -1,0 +1,31 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/compiler.xml
+/.idea/gradle.xml
+/.idea/misc.xml
+/.idea/runConfigurations.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Monorepo generated artifacts and local workspace files
+.kotlin/
+**/node_modules/
+/functions/lib/
+
+# Local duplicate service config file
+/app/src/google-services (2).json
+
+# Local IDE and service configuration
+/.vscode/mcp.json
+/app/google-services.json

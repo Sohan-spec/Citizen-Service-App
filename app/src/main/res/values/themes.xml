@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CACI" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/caci_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/caci_primary_dark</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="android:statusBarColor">@color/caci_primary_dark</item>
+    </style>
+
+    <style name="Theme.CACI" parent="Base.Theme.CACI" />
+</resources>

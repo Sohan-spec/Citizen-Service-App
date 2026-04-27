@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="caci_primary">#117A65</color>
+    <color name="caci_primary_dark">#0B5D4D</color>
+    <color name="caci_surface">#FFFFFFFF</color>
+    <color name="caci_background">#FFF4F7F8</color>
+    <color name="caci_border">#FFD7DFE3</color>
+    <color name="caci_input_bg">#FFFFFFFF</color>
+    <color name="caci_input_stroke">#FFB8C9D0</color>
+    <color name="caci_text_primary">#FF1A2B34</color>
+    <color name="caci_text_secondary">#FF5E6E76</color>
+    <color name="caci_hint">#FF7F9098</color>
+    <color name="caci_truck_marker">#FFFF7043</color>
+</resources>

@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function hasRequiredUserFields(data) {
+      return data.keys().hasAll([
+        'name',
+        'phone',
+        'address',
+        'age',
+        'gender',
+        'home_lat',
+        'home_lng'
+      ]);
+    }
+
+    function hasOnlyAllowedUserFields(data) {
+      return data.keys().hasOnly([
+        'name',
+        'phone',
+        'address',
+        'age',
+        'gender',
+        'home_lat',
+        'home_lng',
+        'fcm_token'
+      ]);
+    }
+
+    function isValidUserData(data) {
+      return hasRequiredUserFields(data)
+        && hasOnlyAllowedUserFields(data)
+        && data.name is string
+        && data.phone is string
+        && data.address is string
+        && data.age is number
+        && data.gender is string
+        && data.home_lat is number
+        && data.home_lng is number
+        && (!('fcm_token' in data) || data.fcm_token is string);
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && isValidUserData(request.resource.data);
+      allow update: if isOwner(uid) && isValidUserData(request.resource.data);
+      allow delete: if isOwner(uid);
+    }
+
+    match /trucks/{truckId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /alert_log/{truckId} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
