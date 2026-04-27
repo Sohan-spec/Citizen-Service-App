@@ -2,15 +2,54 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="caci_primary">#117A65</color>
-    <color name="caci_primary_dark">#0B5D4D</color>
+
+    <!-- Bharat Digital Protocol — Primary: Navy Blue -->
+    <color name="caci_primary">#000080</color>
+    <color name="caci_primary_dark">#00003C</color>
+    <color name="caci_primary_light">#E0E0FF</color>
+    <color name="caci_on_primary">#FFFFFF</color>
+
+    <!-- Secondary: Saffron -->
+    <color name="caci_secondary">#FF9933</color>
+    <color name="caci_secondary_dark">#8F4E00</color>
+    <color name="caci_secondary_container">#FE9832</color>
+
+    <!-- Tertiary: India Green -->
+    <color name="caci_tertiary">#128807</color>
+    <color name="caci_tertiary_dark">#000F00</color>
+    <color name="caci_tertiary_container">#012900</color>
+
+    <!-- Surfaces -->
     <color name="caci_surface">#FFFFFFFF</color>
-    <color name="caci_background">#FFF4F7F8</color>
-    <color name="caci_border">#FFD7DFE3</color>
+    <color name="caci_background">#FFF8F9FA</color>
+    <color name="caci_surface_container">#FFEDEEEF</color>
+    <color name="caci_surface_container_high">#FFE7E8E9</color>
+
+    <!-- Borders & Outlines -->
+    <color name="caci_border">#FFE0E0E0</color>
+    <color name="caci_outline">#FF767684</color>
+    <color name="caci_outline_variant">#FFC6C5D5</color>
+
+    <!-- Input Fields -->
     <color name="caci_input_bg">#FFFFFFFF</color>
-    <color name="caci_input_stroke">#FFB8C9D0</color>
-    <color name="caci_text_primary">#FF1A2B34</color>
-    <color name="caci_text_secondary">#FF5E6E76</color>
-    <color name="caci_hint">#FF7F9098</color>
+    <color name="caci_input_stroke">#FFC6C5D5</color>
+    <color name="caci_input_stroke_focused">#FF000080</color>
+
+    <!-- Text -->
+    <color name="caci_text_primary">#FF191C1D</color>
+    <color name="caci_text_secondary">#FF464653</color>
+    <color name="caci_hint">#FF767684</color>
+
+    <!-- Status -->
+    <color name="caci_error">#FFBA1A1A</color>
+    <color name="caci_success">#FF128807</color>
+    <color name="caci_warning">#FFFF9933</color>
+
+    <!-- Feature Card Accents -->
+    <color name="caci_card_accent_navy">#FF000080</color>
+    <color name="caci_card_accent_saffron">#FFFF9933</color>
+    <color name="caci_card_accent_green">#FF128807</color>
+
+    <!-- Existing marker color (untouched) -->
     <color name="caci_truck_marker">#FFFF7043</color>
 </resources>

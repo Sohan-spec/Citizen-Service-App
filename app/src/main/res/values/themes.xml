@@ -1,11 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme — Bharat Digital Protocol -->
     <style name="Base.Theme.CACI" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/caci_primary</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/caci_on_primary</item>
         <item name="colorPrimaryContainer">@color/caci_primary_dark</item>
-        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorOnPrimaryContainer">@color/caci_on_primary</item>
+        <item name="colorSecondary">@color/caci_secondary</item>
+        <item name="colorTertiary">@color/caci_tertiary</item>
+        <item name="colorError">@color/caci_error</item>
+        <item name="colorSurface">@color/caci_surface</item>
+        <item name="colorOnSurface">@color/caci_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/caci_text_secondary</item>
+        <item name="colorOutline">@color/caci_outline</item>
+        <item name="colorOutlineVariant">@color/caci_outline_variant</item>
+        <item name="android:colorBackground">@color/caci_background</item>
         <item name="android:statusBarColor">@color/caci_primary_dark</item>
+        <item name="android:navigationBarColor">@color/caci_primary_dark</item>
     </style>
 
     <style name="Theme.CACI" parent="Base.Theme.CACI" />

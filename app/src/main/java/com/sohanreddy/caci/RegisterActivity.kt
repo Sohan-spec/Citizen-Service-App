@@ -47,12 +47,14 @@ class RegisterActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        // Material3 Exposed Dropdown for Gender
         val genderOptions = listOf("Male", "Female", "Other")
-        binding.spinnerGender.adapter = ArrayAdapter(
+        val genderAdapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_dropdown_item_1line,
             genderOptions,
         )
+        binding.dropdownGender.setAdapter(genderAdapter)
 
         binding.buttonRegister.setOnClickListener {
             if (hasLocationPermission()) {
@@ -75,9 +77,9 @@ class RegisterActivity : AppCompatActivity() {
         val address = binding.editAddress.text?.toString().orEmpty().trim()
         val ageText = binding.editAge.text?.toString().orEmpty().trim()
         val age = ageText.toIntOrNull()
-        val gender = binding.spinnerGender.selectedItem?.toString().orEmpty()
+        val gender = binding.dropdownGender.text?.toString().orEmpty().trim()
 
-        if (name.isEmpty() || address.isEmpty() || age == null || age <= 0) {
+        if (name.isEmpty() || address.isEmpty() || age == null || age <= 0 || gender.isEmpty()) {
             Toast.makeText(this, "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
             return
         }
@@ -107,6 +109,7 @@ class RegisterActivity : AppCompatActivity() {
                 val fcmToken = FirebaseMessaging.getInstance().token.await()
 
                 val payload = hashMapOf(
+                    "uid" to currentUser.uid,
                     "name" to name,
                     "phone" to (currentUser.phoneNumber ?: ""),
                     "address" to address,
@@ -115,6 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                     "home_lat" to coords.first,
                     "home_lng" to coords.second,
                     "fcm_token" to fcmToken,
+                    "alert_sent_today" to false,
                 )
 
                 firestore.collection("users").document(currentUser.uid).set(payload).await()

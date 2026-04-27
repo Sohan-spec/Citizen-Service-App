@@ -8,96 +8,171 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="24dp">
+        android:paddingTop="56dp"
+        android:paddingBottom="32dp">
 
+        <!-- App Logo -->
         <ImageView
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:contentDescription="@string/app_name"
             android:src="@mipmap/ic_launcher" />
 
+        <!-- App Title -->
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/login_title"
-            android:textColor="@color/caci_text_primary"
-            android:textSize="28sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/login_subtitle"
-            android:textColor="@color/caci_text_secondary"
-            android:textSize="14sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutPhone"
-            style="@style/Widget.CACI.InputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:hint="@string/hint_phone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:inputType="phone"
-                android:maxLines="1"
-                android:paddingVertical="14dp"
-                android:textColor="@color/caci_text_primary" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSendOtp"
-            style="@style/Widget.CACI.PrimaryButton"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/send_otp" />
+            android:text="@string/app_name"
+            android:textColor="@color/caci_primary"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/layoutOtpContainer"
+        <!-- Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/app_subtitle"
+            android:textColor="@color/caci_text_secondary"
+            android:textSize="13sp" />
+
+        <!-- Sign In Card -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical">
+            android:layout_marginTop="36dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            app:strokeColor="@color/caci_border"
+            app:strokeWidth="1dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.CACI.InputLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_otp">
+                android:orientation="vertical"
+                android:padding="24dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editOtp"
+                <!-- Sign In Heading -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_title"
+                    android:textColor="@color/caci_text_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/login_subtitle"
+                    android:textColor="@color/caci_text_secondary"
+                    android:textSize="14sp" />
+
+                <!-- Phone Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutPhone"
+                    style="@style/Widget.CACI.InputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    android:maxLines="1"
-                    android:paddingVertical="14dp"
-                    android:textColor="@color/caci_text_primary" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="24dp"
+                    android:hint="@string/hint_phone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonVerifyOtp"
-                style="@style/Widget.CACI.PrimaryButton"
-                android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:maxLines="1"
+                        android:paddingVertical="14dp"
+                        android:textColor="@color/caci_text_primary"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Send OTP Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSendOtp"
+                    style="@style/Widget.CACI.PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/send_otp" />
+
+                <!-- OTP Container (hidden by default) -->
+                <LinearLayout
+                    android:id="@+id/layoutOtpContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/caci_border" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.CACI.InputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_otp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editOtp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:maxLines="1"
+                            android:paddingVertical="14dp"
+                            android:textColor="@color/caci_text_primary"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonVerifyOtp"
+                        style="@style/Widget.CACI.PrimaryButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/verify_otp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sign Up Link -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/verify_otp" />
+                android:text="@string/login_signup_prompt"
+                android:textColor="@color/caci_text_secondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_signup_link"
+                android:textColor="@color/caci_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

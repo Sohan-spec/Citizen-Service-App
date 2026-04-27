@@ -65,6 +65,10 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Enter a valid phone number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            // Hide keyboard
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.hideSoftInputFromWindow(binding.editPhone.windowToken, 0)
+            binding.editPhone.clearFocus()
             startPhoneVerification(phone)
         }
 
@@ -79,6 +83,11 @@ class LoginActivity : AppCompatActivity() {
 
             val credential = PhoneAuthProvider.getCredential(id, code)
             signInWithCredential(credential)
+        }
+
+        // Navigate to Sign Up screen
+        binding.textSignUp.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 

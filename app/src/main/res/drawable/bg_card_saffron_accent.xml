@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Saffron accent top stripe -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/caci_card_accent_saffron" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <!-- White body overlaid below the top stripe -->
+    <item android:top="3dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/caci_surface" />
+            <corners
+                android:bottomLeftRadius="4dp"
+                android:bottomRightRadius="4dp" />
+        </shape>
+    </item>
+</layer-list>

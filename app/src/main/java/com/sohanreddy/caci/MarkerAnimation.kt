@@ -11,7 +11,7 @@ object MarkerAnimation {
     fun animateMarkerTo(marker: Marker, finalPosition: LatLng) {
         val startPosition = marker.position
         val animator = ValueAnimator.ofObject(LatLngEvaluator(), startPosition, finalPosition)
-        animator.duration = 1000L
+        animator.duration = 2500L
         animator.interpolator = LinearInterpolator()
         animator.addUpdateListener { valueAnimator ->
             val animatedPosition = valueAnimator.animatedValue as LatLng

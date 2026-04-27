@@ -1,9 +1,11 @@
 package com.sohanreddy.caci
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,10 +27,16 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.sohanreddy.caci.databinding.ActivityGarbageMapBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import java.util.Locale
+import kotlin.math.cos
+import kotlin.math.sin
 
 class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -39,13 +48,13 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private var googleMap: GoogleMap? = null
     private var homeMarker: Marker? = null
     private var truckMarker: Marker? = null
-    private var truckListener: ListenerRegistration? = null
+    private var simulationJob: Job? = null
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { granted ->
         if (granted) {
-            enableMyLocationAndCenter()
+            setupWithCurrentLocation()
         } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
         }
@@ -78,13 +87,10 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
         map.uiSettings.isRotateGesturesEnabled = false
 
         if (hasLocationPermission()) {
-            enableMyLocationAndCenter()
+            setupWithCurrentLocation()
         } else {
             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
-
-        drawHomeLocationAndRadius()
-        subscribeToTruckUpdates()
     }
 
     private fun hasLocationPermission(): Boolean {
@@ -94,98 +100,146 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun enableMyLocationAndCenter() {
+    @SuppressLint("MissingPermission")
+    private fun setupWithCurrentLocation() {
         val map = googleMap ?: return
-
-        if (!hasLocationPermission()) {
-            return
-        }
+        if (!hasLocationPermission()) return
 
         map.isMyLocationEnabled = true
 
         lifecycleScope.launch {
             try {
-                val location = fusedLocationClient.lastLocation.await()
-                val target = if (location != null) {
-                    LatLng(location.latitude, location.longitude)
-                } else {
-                    LatLng(12.9352, 77.6245)
+                var location = fusedLocationClient.lastLocation.await()
+                if (location == null) {
+                    location = fusedLocationClient
+                        .getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+                        .await()
                 }
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(target, 15f))
-            } catch (_: Exception) {
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(12.9352, 77.6245), 15f))
-            }
-        }
-    }
 
-    private fun drawHomeLocationAndRadius() {
-        val uid = auth.currentUser?.uid ?: return
+                if (location == null) {
+                    Toast.makeText(this@GarbageMapActivity, "Unable to get location", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
 
-        lifecycleScope.launch {
-            try {
-                val userDoc = firestore.collection("users").document(uid).get().await()
-                val lat = userDoc.getDouble("home_lat") ?: return@launch
-                val lng = userDoc.getDouble("home_lng") ?: return@launch
-                val homeLatLng = LatLng(lat, lng)
+                val userLatLng = LatLng(location.latitude, location.longitude)
 
-                val map = googleMap ?: return@launch
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15f))
+
+                // Draw home marker + 500m radius
                 homeMarker?.remove()
                 homeMarker = map.addMarker(
                     MarkerOptions()
-                        .position(homeLatLng)
-                        .title("Your Home")
+                        .position(userLatLng)
+                        .title("Your Location")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)),
                 )
 
                 map.addCircle(
                     CircleOptions()
-                        .center(homeLatLng)
+                        .center(userLatLng)
                         .radius(500.0)
                         .strokeWidth(2f)
                         .strokeColor(0xAAFF3B30.toInt())
                         .fillColor(0x33FF3B30),
                 )
+
+                // Update Firestore with current location
+                val uid = auth.currentUser?.uid
+                if (uid != null) {
+                    val updates = hashMapOf<String, Any>(
+                        "home_lat" to location.latitude,
+                        "home_lng" to location.longitude,
+                    )
+                    val address = reverseGeocode(location.latitude, location.longitude)
+                    if (address != null) updates["address"] = address
+                    firestore.collection("users").document(uid).update(updates).await()
+                }
+
+                // Start local simulation around user's location
+                startLocalSimulation(location.latitude, location.longitude)
+
             } catch (e: Exception) {
-                Toast.makeText(this@GarbageMapActivity, "Unable to load home location", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@GarbageMapActivity, "Location error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun subscribeToTruckUpdates() {
-        truckListener?.remove()
-        truckListener = firestore.collection("trucks").document("truck_001")
-            .addSnapshotListener { snapshot, error ->
-                if (error != null || snapshot == null || !snapshot.exists()) {
-                    return@addSnapshotListener
-                }
+    /**
+     * Client-side truck simulation: ticks every 3 seconds, writes to Firestore
+     * (which triggers the cloud function for notifications), and animates smoothly.
+     */
+    private fun startLocalSimulation(centerLat: Double, centerLng: Double) {
+        simulationJob?.cancel()
 
-                val lat = snapshot.getDouble("latitude") ?: return@addSnapshotListener
-                val lng = snapshot.getDouble("longitude") ?: return@addSnapshotListener
-                val truckId = snapshot.getString("truck_id") ?: "truck_001"
-                val truckType = snapshot.getString("truck_type") ?: "Unknown"
-                val newPosition = LatLng(lat, lng)
-                val map = googleMap ?: return@addSnapshotListener
+        val mPerDegLat = 111320.0
+        val mPerDegLng = 111320.0 * cos(Math.toRadians(centerLat))
 
+        // Pass-through route: outside → inside circle → back out
+        val distances = intArrayOf(600, 450, 350, 200, 100, 200, 350, 500, 650)
+        val waypoints = mutableListOf<LatLng>()
+
+        for (i in distances.indices) {
+            val dist = distances[i].toDouble()
+            // First half approach from SW, second half exit to NE
+            val angle = if (i < distances.size / 2) Math.toRadians(225.0) else Math.toRadians(45.0)
+            val dLat = (dist * cos(angle)) / mPerDegLat
+            val dLng = (dist * sin(angle)) / mPerDegLng
+            waypoints.add(LatLng(centerLat + dLat, centerLng + dLng))
+        }
+
+        simulationJob = lifecycleScope.launch {
+            for (i in waypoints.indices) {
+                val wp = waypoints[i]
+
+                // Write to Firestore → triggers checkProximityAndAlert cloud function
+                try {
+                    firestore.collection("trucks").document("truck_001").set(
+                        mapOf(
+                            "latitude" to wp.latitude,
+                            "longitude" to wp.longitude,
+                            "waypoint_index" to i,
+                            "truck_id" to "truck_001",
+                            "truck_type" to "Municipal Waste",
+                            "updated_at" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
+                        ),
+                    ).await()
+                } catch (_: Exception) { }
+
+                // Animate marker smoothly on map
+                val map = googleMap ?: continue
                 if (truckMarker == null) {
                     val truckIcon = createTruckMarkerIcon()
                     truckMarker = map.addMarker(
                         MarkerOptions()
-                            .position(newPosition)
-                            .title("$truckId")
-                            .snippet("Type: $truckType")
-                            .icon(
-                                truckIcon
-                                    ?: BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE),
-                            ),
+                            .position(wp)
+                            .title("truck_001")
+                            .snippet("Type: Municipal Waste")
+                            .icon(truckIcon ?: BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)),
                     )
                     truckMarker?.showInfoWindow()
                 } else {
-                    truckMarker?.title = truckId
-                    truckMarker?.snippet = "Type: $truckType"
-                    MarkerAnimation.animateMarkerTo(truckMarker!!, newPosition)
+                    MarkerAnimation.animateMarkerTo(truckMarker!!, wp)
                     truckMarker?.showInfoWindow()
                 }
+
+                // Wait 3 seconds before next step
+                delay(3000L)
             }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private suspend fun reverseGeocode(lat: Double, lng: Double): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val geocoder = Geocoder(this@GarbageMapActivity, Locale.getDefault())
+                val addresses = geocoder.getFromLocation(lat, lng, 1)
+                if (!addresses.isNullOrEmpty()) {
+                    val addr = addresses[0]
+                    listOfNotNull(addr.subLocality, addr.locality).joinToString(", ").ifEmpty { null }
+                } else null
+            } catch (_: Exception) { null }
+        }
     }
 
     private fun createTruckMarkerIcon() = try {
@@ -199,13 +253,11 @@ class GarbageMapActivity : AppCompatActivity(), OnMapReadyCallback {
         val canvas = Canvas(bitmap)
         drawable.draw(canvas)
         BitmapDescriptorFactory.fromBitmap(bitmap)
-    } catch (_: Exception) {
-        null
-    }
+    } catch (_: Exception) { null }
 
     override fun onDestroy() {
-        truckListener?.remove()
-        truckListener = null
+        simulationJob?.cancel()
+        simulationJob = null
         super.onDestroy()
     }
 }

@@ -11,21 +11,48 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-const WAYPOINTS: Array<[number, number]> = [
-  [12.9320, 77.6210],
-  [12.9330, 77.6220],
-  [12.9338, 77.6230],
-  [12.9345, 77.6238],
-  [12.9350, 77.6243],
-  [12.9352, 77.6245],
-  [12.9358, 77.6252],
-  [12.9365, 77.6260],
-  [12.9370, 77.6270],
-  [12.9360, 77.6280],
-  [12.9345, 77.6270],
-  [12.9330, 77.6255],
-  [12.9320, 77.6240],
-];
+/**
+ * Generate a pass-through route: starts ~800m away, approaches center
+ * (enters 500m circle), passes through ~100m from center, then exits
+ * back out to ~800m. One-way pass, no looping inside the circle.
+ */
+function generatePassThroughWaypoints(
+  centerLat: number,
+  centerLng: number,
+): Array<[number, number]> {
+  const mPerDegLat = 111320;
+  const mPerDegLng = 111320 * Math.cos((centerLat * Math.PI) / 180);
+
+  // Distances in meters from center along the approach axis
+  const distances = [
+    600, 450,            // outside → approaching
+    350, 150,            // inside circle
+    350, 450, 600, 750,  // exiting
+  ];
+
+  // Approach from south-west, pass through, exit to north-east
+  const points: Array<[number, number]> = [];
+  const totalSteps = distances.length;
+
+  for (let i = 0; i < totalSteps; i++) {
+    const dist = distances[i];
+    // First half: approaching from south-west (angle ~225°)
+    // Second half: exiting to north-east (angle ~45°)
+    let angle: number;
+    if (i < totalSteps / 2) {
+      // Approaching from south-west
+      angle = (225 * Math.PI) / 180;
+    } else {
+      // Exiting to north-east
+      angle = (45 * Math.PI) / 180;
+    }
+    const dLat = (dist * Math.cos(angle)) / mPerDegLat;
+    const dLng = (dist * Math.sin(angle)) / mPerDegLng;
+    points.push([centerLat + dLat, centerLng + dLng]);
+  }
+
+  return points;
+}
 
 function toRadians(value: number): number {
   return (value * Math.PI) / 180;
@@ -53,26 +80,66 @@ function haversineDistanceMeters(
 export const simulateTruckMovement = onSchedule("every 1 minutes", async () => {
   const truckRef = db.collection("trucks").doc("truck_001");
 
+  // Find any user to use as the center for simulation
+  const usersSnapshot = await db.collection("users").limit(1).get();
+  let centerLat = 12.9352;
+  let centerLng = 77.6245;
+
+  if (!usersSnapshot.empty) {
+    const userData = usersSnapshot.docs[0].data();
+    const uLat = Number(userData.home_lat);
+    const uLng = Number(userData.home_lng);
+    if (Number.isFinite(uLat) && Number.isFinite(uLng)) {
+      centerLat = uLat;
+      centerLng = uLng;
+    }
+  }
+
+  const waypoints = generatePassThroughWaypoints(centerLat, centerLng);
+  const currentCenter = `${centerLat},${centerLng}`;
+
   await db.runTransaction(async (transaction) => {
     const snapshot = await transaction.get(truckRef);
-    if (!snapshot.exists) {
-      throw new Error("trucks/truck_001 does not exist");
+
+    let currentIndex = 0;
+
+    if (snapshot.exists) {
+      const data = snapshot.data() ?? {};
+      const storedCenter = data.route_center ?? "";
+      currentIndex = Number(data.waypoint_index ?? 0);
+
+      // If user location changed, reset the route
+      if (storedCenter !== currentCenter) {
+        currentIndex = 0;
+      } else {
+        currentIndex = currentIndex + 1;
+        // Once the truck finishes the pass-through, stop at last waypoint
+        if (currentIndex >= waypoints.length) {
+          currentIndex = waypoints.length - 1;
+        }
+      }
     }
 
-    const data = snapshot.data() ?? {};
-    const currentIndex = Number(data.waypoint_index ?? 0);
-    const nextIndex = (currentIndex + 1) % WAYPOINTS.length;
-    const [nextLat, nextLng] = WAYPOINTS[nextIndex];
+    const [nextLat, nextLng] = waypoints[currentIndex];
 
-    transaction.update(truckRef, {
+    const updateData: Record<string, unknown> = {
       latitude: nextLat,
       longitude: nextLng,
-      waypoint_index: nextIndex,
+      waypoint_index: currentIndex,
+      route_center: currentCenter,
+      truck_id: "truck_001",
+      truck_type: "Municipal Waste",
       updated_at: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    };
+
+    if (snapshot.exists) {
+      transaction.update(truckRef, updateData);
+    } else {
+      transaction.set(truckRef, updateData);
+    }
   });
 
-  logger.info("Truck movement simulated for truck_001");
+  logger.info("Truck movement simulated for truck_001", {centerLat, centerLng});
 });
 
 export const checkProximityAndAlert = onDocumentWritten(
@@ -95,14 +162,18 @@ export const checkProximityAndAlert = onDocumentWritten(
       return;
     }
 
+    // Check if we already sent a notification for this truck today
     const alertRef = db.collection("alert_log").doc(truckId);
     const alertSnap = await alertRef.get();
-    const currentlyAlerted = Boolean(alertSnap.data()?.alerted_500m ?? false);
+    const alreadyAlerted = Boolean(alertSnap.data()?.alerted_500m ?? false);
+
+    // If already alerted, do NOT send again — one notification only
+    if (alreadyAlerted) {
+      return;
+    }
 
     const usersSnapshot = await db.collection("users").get();
-
     const recipients: Array<{token: string; distance: number}> = [];
-    let anyWithin1000m = false;
 
     usersSnapshot.forEach((doc) => {
       const user = doc.data();
@@ -121,16 +192,12 @@ export const checkProximityAndAlert = onDocumentWritten(
         homeLng,
       );
 
-      if (distance <= 1000) {
-        anyWithin1000m = true;
-      }
-
       if (distance < 500 && token.trim().length > 0) {
         recipients.push({token, distance});
       }
     });
 
-    if (recipients.length > 0 && !currentlyAlerted) {
+    if (recipients.length > 0) {
       await Promise.all(
         recipients.map((r) =>
           admin.messaging().send({
@@ -138,13 +205,14 @@ export const checkProximityAndAlert = onDocumentWritten(
             notification: {
               title: "🚛 Garbage Truck Nearby!",
               body:
-                `Truck ${truckCode} (${truckType}) is approximately ` +
-                `${Math.round(r.distance)}m from your home`,
+                `Truck ID: ${truckCode} | Waste Type: ${truckType} | ` +
+                `~${Math.round(r.distance)}m from your house`,
             },
           }),
         ),
       );
 
+      // Mark as alerted — will NOT send again until reset
       await alertRef.set(
         {
           truck_id: truckCode,
@@ -154,23 +222,32 @@ export const checkProximityAndAlert = onDocumentWritten(
         {merge: true},
       );
 
-      logger.info("Proximity alerts sent", {
+      logger.info("Proximity alert sent (one-time)", {
         truckId,
         recipientCount: recipients.length,
       });
-      return;
-    }
-
-    if (!anyWithin1000m && currentlyAlerted) {
-      await alertRef.set(
-        {
-          truck_id: truckCode,
-          alerted_500m: false,
-          last_alert_time: admin.firestore.FieldValue.serverTimestamp(),
-        },
-        {merge: true},
-      );
-      logger.info("Alert window reset for truck", {truckId});
     }
   },
 );
+
+/**
+ * Daily reset — clears alert flags so users get one fresh alert per day.
+ * Runs at midnight IST (18:30 UTC previous day).
+ */
+export const resetDailyAlerts = onSchedule("every day 18:30", async () => {
+  const alertDocs = await db.collection("alert_log").get();
+  const batch = db.batch();
+  alertDocs.forEach((doc) => {
+    batch.update(doc.ref, {alerted_500m: false});
+  });
+  await batch.commit();
+
+  // Also reset truck waypoint to restart the route
+  const truckRef = db.collection("trucks").doc("truck_001");
+  const truckSnap = await truckRef.get();
+  if (truckSnap.exists) {
+    await truckRef.update({waypoint_index: 0});
+  }
+
+  logger.info("Daily alert flags and truck route reset");
+});

@@ -1,73 +1,79 @@
 package com.sohanreddy.caci
 
-import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.firebase.messaging.FirebaseMessaging
+import com.sohanreddy.caci.databinding.ActivityHomeBinding
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.messaging.FirebaseMessaging
-import com.sohanreddy.caci.databinding.ActivityHomeBinding
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+
+    private val notifPermLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (!granted) {
+            Toast.makeText(this, "Notifications disabled — you won't get truck alerts", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.cardGarbageTracker.setOnClickListener {
-            startActivity(Intent(this, GarbageMapActivity::class.java))
+        // Request notification permission on Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                notifPermLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
 
-        binding.cardWaterUpdates.setOnClickListener {
-            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+        // Default to Home tab
+        if (savedInstanceState == null) {
+            replaceFragment(HomeFragment())
         }
 
-        binding.cardKnowItAll.setOnClickListener {
-            Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> replaceFragment(HomeFragment())
+                R.id.nav_profile -> replaceFragment(ProfileFragment())
+                R.id.nav_settings -> replaceFragment(SettingsFragment())
+            }
+            true
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        loadUserName()
         refreshFcmToken()
     }
 
-    private fun loadUserName() {
-        val uid = auth.currentUser?.uid ?: return
-
-        lifecycleScope.launch {
-            try {
-                val snapshot = firestore.collection("users").document(uid).get().await()
-                val name = snapshot.getString("name") ?: "Citizen"
-                binding.textWelcome.text = getString(R.string.welcome_user, name)
-            } catch (e: Exception) {
-                binding.textWelcome.text = getString(R.string.welcome_user, "Citizen")
-            }
-        }
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commit()
     }
 
     private fun refreshFcmToken() {
-        val uid = auth.currentUser?.uid ?: return
-
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
         lifecycleScope.launch {
             try {
                 val token = FirebaseMessaging.getInstance().token.await()
-                firestore.collection("users").document(uid)
-                    .update("fcm_token", token)
-                    .await()
-            } catch (_: Exception) {
-                // Fail silently; token refresh can happen in messaging service too.
-            }
+                FirebaseFirestore.getInstance().collection("users").document(uid)
+                    .update("fcm_token", token).await()
+            } catch (_: Exception) { }
         }
     }
 }

@@ -1,26 +1,41 @@
 <resources>
     <string name="app_name">CACI</string>
-    <string name="login_title">Welcome to CACI</string>
-    <string name="login_subtitle">Citizen-Authority Civic Interface</string>
+    <string name="app_subtitle">Citizen-Authority Civic Interface</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">Sign In</string>
+    <string name="login_subtitle">Access citizen services securely</string>
     <string name="send_otp">Send OTP</string>
     <string name="verify_otp">Verify OTP</string>
     <string name="hint_phone">Phone Number (+91XXXXXXXXXX)</string>
-    <string name="hint_otp">Enter OTP</string>
+    <string name="hint_otp">Enter 6-digit OTP</string>
+    <string name="login_signup_prompt">Don\'t have an account? </string>
+    <string name="login_signup_link">Sign Up</string>
 
+    <!-- Register Screen -->
     <string name="register_title">Complete Your Profile</string>
-    <string name="register_subtitle">Help us map civic services closer to home</string>
-    <string name="hint_name">Name</string>
-    <string name="hint_address">Address</string>
+    <string name="register_subtitle">Please provide your official details to proceed.\nYour information is encrypted and securely stored.</string>
+    <string name="hint_name">Full Name</string>
+    <string name="hint_address">Area / Address</string>
     <string name="hint_age">Age</string>
     <string name="hint_gender">Gender</string>
     <string name="complete_registration">Submit Registration</string>
 
+    <!-- Home Screen -->
     <string name="welcome_user">Hello, %1$s</string>
     <string name="welcome_user_default">Hello, Citizen</string>
     <string name="home_subtitle">Choose a service to continue</string>
-    <string name="feature_garbage_tracker">Garbage Truck Tracker</string>
-    <string name="feature_water_updates">Water Updates</string>
-    <string name="feature_know_it_all">Know It All</string>
+    <string name="location_default">Your Area</string>
 
+    <!-- Feature Cards -->
+    <string name="feature_garbage_tracker">Garbage Truck Tracker</string>
+    <string name="feature_garbage_desc">Track garbage trucks in real-time on the map</string>
+    <string name="feature_water_updates">Water Updates</string>
+    <string name="feature_water_desc">Get real-time water supply schedule updates</string>
+    <string name="feature_know_it_all">Know It All</string>
+    <string name="feature_know_it_all_desc">Explore the civic knowledge base for your area</string>
+    <string name="coming_soon">Coming Soon</string>
+
+    <!-- Garbage Tracker -->
     <string name="garbage_tracker_title">Garbage Truck Tracker</string>
 </resources>
