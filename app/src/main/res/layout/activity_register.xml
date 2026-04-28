@@ -14,7 +14,8 @@
         <!-- ═══ Gradient Header ═══ -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp">
+            android:layout_height="240dp"
+            android:fitsSystemWindows="true">
 
             <View
                 android:layout_width="match_parent"
@@ -133,7 +134,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
                         android:maxLines="1"
-                        android:paddingVertical="14dp"
                         android:textColor="@color/caci_text_primary"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -153,7 +153,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:maxLines="1"
-                        android:paddingVertical="14dp"
                         android:textColor="@color/caci_text_primary"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -172,7 +171,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
-                        android:paddingVertical="14dp"
                         android:textColor="@color/caci_text_primary"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -192,7 +190,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPostalAddress"
                         android:minLines="2"
-                        android:paddingVertical="14dp"
                         android:textColor="@color/caci_text_primary"
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>

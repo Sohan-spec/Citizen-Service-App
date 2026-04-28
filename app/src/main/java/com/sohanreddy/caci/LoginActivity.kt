@@ -85,10 +85,7 @@ class LoginActivity : AppCompatActivity() {
             signInWithCredential(credential)
         }
 
-        // Navigate to Sign Up screen
-        binding.textSignUp.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
+
     }
 
     private fun normalizePhone(raw: String): String? {

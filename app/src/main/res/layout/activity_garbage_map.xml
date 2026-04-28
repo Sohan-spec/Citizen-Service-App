@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/caci_primary"
+        android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
         android:title="@string/garbage_tracker_title"
         android:titleTextColor="@color/white"
-        app:navigationIcon="@android:drawable/ic_menu_revert" />
+        app:navigationIcon="@drawable/ic_arrow_back" />
 
     <FrameLayout
         android:id="@+id/mapContainer"

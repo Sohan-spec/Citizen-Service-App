@@ -14,6 +14,8 @@ class RoleSelectionActivity : AppCompatActivity() {
         binding = ActivityRoleSelectionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.buttonBack.setOnClickListener { finish() }
+
         binding.cardOfficer.setOnClickListener {
             startActivity(Intent(this, OfficerLoginActivity::class.java))
         }

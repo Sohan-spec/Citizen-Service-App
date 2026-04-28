@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_navy_toolbar"
+        android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
         android:title="@string/water_dashboard_title"
         android:titleTextColor="@color/white"
-        app:navigationIconTint="@color/white"
-        app:navigationIcon="@android:drawable/ic_menu_revert" />
+        app:navigationIcon="@drawable/ic_arrow_back" />
 
     <!-- ═══ Tricolor Stripe ═══ -->
     <LinearLayout
