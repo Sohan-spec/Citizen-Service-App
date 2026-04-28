@@ -71,72 +71,158 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- ═══ Empty state placeholder ═══ -->
-    <LinearLayout
-        android:id="@+id/layoutEmpty"
+    <!-- ═══ Content: Map or Schedule list ═══ -->
+    <FrameLayout
+        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="40dp"
-        android:visibility="visible">
+        android:layout_weight="1">
 
-        <!-- Decorative circle behind icon -->
         <FrameLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp">
+            android:id="@+id/mapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
-            <View
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/bg_water_banner" />
-
-            <ImageView
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                android:contentDescription="No schedule"
-                android:src="@drawable/ic_water_drop"
-                app:tint="@color/caci_water_blue"
-                android:alpha="0.6" />
-        </FrameLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/no_water_schedule"
-            android:textColor="@color/caci_text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="Check back later for updates"
-            android:textColor="@color/caci_text_secondary"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <!-- ═══ Schedule list ═══ -->
-    <ScrollView
-        android:id="@+id/scrollReleases"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/containerReleases"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardReleaseInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:visibility="gone"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/caci_water_blue_light"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textInfoLocality"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/caci_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/buttonInfoClose"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="Close"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        android:tint="@color/caci_text_secondary"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textInfoTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/caci_text_secondary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/textInfoDuration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/caci_text_secondary"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/textInfoNote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/caci_hint"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ═══ Empty state placeholder ═══ -->
+        <LinearLayout
+            android:id="@+id/layoutEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="12dp" />
-    </ScrollView>
+            android:padding="40dp"
+            android:visibility="gone">
+
+            <!-- Decorative circle behind icon -->
+            <FrameLayout
+                android:layout_width="120dp"
+                android:layout_height="120dp">
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bg_water_banner" />
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="No schedule"
+                    android:src="@drawable/ic_water_drop"
+                    android:alpha="0.6"
+                    app:tint="@color/caci_water_blue" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/no_water_schedule"
+                android:textColor="@color/caci_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Check back later for updates"
+                android:textColor="@color/caci_text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- ═══ Schedule list ═══ -->
+        <ScrollView
+            android:id="@+id/scrollReleases"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/containerReleases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp" />
+        </ScrollView>
+    </FrameLayout>
 
 </LinearLayout>

@@ -82,6 +82,7 @@
     <string name="no_water_schedule">No water release scheduled yet</string>
     <string name="scheduled_at">Scheduled at: %1$s</string>
     <string name="duration_label">Duration: %1$s</string>
+    <string name="no_additional_notes">No additional notes</string>
 
     <!-- Duration options -->
     <string name="duration_30_min">30 minutes</string>

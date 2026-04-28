@@ -128,7 +128,12 @@ class AdminDashboardActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // View as Resident — officer can also see the full schedule like a citizen
         binding.buttonViewAsResident.setOnClickListener {
-            startActivity(Intent(this, ResidentWaterActivity::class.java))
+            val intent = Intent(this, ResidentWaterActivity::class.java)
+                .putExtra(
+                    ResidentWaterActivity.EXTRA_VIEW_MODE,
+                    ResidentWaterActivity.VIEW_MODE_OFFICER,
+                )
+            startActivity(intent)
         }
     }
 

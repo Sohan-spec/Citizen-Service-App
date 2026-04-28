@@ -21,7 +21,12 @@ class RoleSelectionActivity : AppCompatActivity() {
         }
 
         binding.cardResident.setOnClickListener {
-            startActivity(Intent(this, ResidentWaterActivity::class.java))
+            val intent = Intent(this, ResidentWaterActivity::class.java)
+                .putExtra(
+                    ResidentWaterActivity.EXTRA_VIEW_MODE,
+                    ResidentWaterActivity.VIEW_MODE_RESIDENT,
+                )
+            startActivity(intent)
         }
     }
 }

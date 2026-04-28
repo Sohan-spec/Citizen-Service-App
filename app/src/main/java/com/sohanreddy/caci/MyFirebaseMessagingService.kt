@@ -54,7 +54,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notifId = if (isWater) WATER_NOTIFICATION_ID else GARBAGE_NOTIFICATION_ID
 
         val intent = if (isWater) {
-            Intent(this, ResidentWaterActivity::class.java)
+            Intent(this, ResidentWaterActivity::class.java).putExtra(
+                ResidentWaterActivity.EXTRA_VIEW_MODE,
+                ResidentWaterActivity.VIEW_MODE_RESIDENT,
+            )
         } else {
             Intent(this, GarbageMapActivity::class.java)
         }
