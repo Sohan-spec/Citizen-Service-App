@@ -22,10 +22,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val title = message.notification?.title ?: message.data["title"] ?: "Garbage Alert"
-        val body = message.notification?.body ?: message.data["body"] ?: "A nearby truck update is available."
+        val title = message.notification?.title ?: message.data["title"] ?: "Civic Alert"
+        val body = message.notification?.body ?: message.data["body"] ?: "A new update is available."
 
-        showNotification(title, body)
+        // Determine channel based on topic or data
+        val topic = message.from ?: ""
+        val isWater = topic.contains("locality_") || message.data["type"] == "water"
+
+        showNotification(title, body, isWater)
     }
 
     override fun onNewToken(token: String) {
@@ -43,12 +47,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun showNotification(title: String, body: String) {
-        createNotificationChannel()
+    private fun showNotification(title: String, body: String, isWater: Boolean) {
+        createNotificationChannels()
 
-        val intent = Intent(this, GarbageMapActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        val channelId = if (isWater) WATER_CHANNEL_ID else GARBAGE_CHANNEL_ID
+        val notifId = if (isWater) WATER_NOTIFICATION_ID else GARBAGE_NOTIFICATION_ID
+
+        val intent = if (isWater) {
+            Intent(this, ResidentWaterActivity::class.java)
+        } else {
+            Intent(this, GarbageMapActivity::class.java)
         }
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
 
         val pendingIntent = PendingIntent.getActivity(
             this,
@@ -57,35 +67,47 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+        val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
 
-        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification)
+        NotificationManagerCompat.from(this).notify(notifId, notification)
     }
 
-    private fun createNotificationChannel() {
+    private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            val garbageChannel = NotificationChannel(
+                GARBAGE_CHANNEL_ID,
                 "Garbage Alerts",
                 NotificationManager.IMPORTANCE_HIGH,
             ).apply {
                 description = "Notifications for nearby garbage truck alerts"
             }
+            manager.createNotificationChannel(garbageChannel)
 
-            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
+            val waterChannel = NotificationChannel(
+                WATER_CHANNEL_ID,
+                "Water Supply Alerts",
+                NotificationManager.IMPORTANCE_HIGH,
+            ).apply {
+                description = "Notifications for water release schedules"
+            }
+            manager.createNotificationChannel(waterChannel)
         }
     }
 
     companion object {
-        private const val CHANNEL_ID = "garbage_alerts"
-        private const val NOTIFICATION_ID = 1001
+        private const val GARBAGE_CHANNEL_ID = "garbage_alerts"
+        private const val WATER_CHANNEL_ID = "water_alerts"
+        private const val GARBAGE_NOTIFICATION_ID = 1001
+        private const val WATER_NOTIFICATION_ID = 1002
     }
 }

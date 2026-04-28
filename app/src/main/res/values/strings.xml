@@ -38,4 +38,54 @@
 
     <!-- Garbage Tracker -->
     <string name="garbage_tracker_title">Garbage Truck Tracker</string>
+
+    <!-- Water Feature — Role Selection -->
+    <string name="water_supply_title">Water Supply Information</string>
+    <string name="water_supply_subtitle">Select your role to continue</string>
+    <string name="role_officer">I am a Water Supply Officer</string>
+    <string name="role_officer_desc">Manage water release schedules and notify residents</string>
+    <string name="role_resident">I am a Resident</string>
+    <string name="role_resident_desc">View upcoming water release schedules for your area</string>
+
+    <!-- Water Feature — Officer Login -->
+    <string name="officer_login_title">Officer Login</string>
+    <string name="officer_login_subtitle">Water Supply Department</string>
+    <string name="hint_officer_id">Officer ID</string>
+    <string name="hint_officer_password">Password</string>
+    <string name="login_as_officer">Login as Officer</string>
+    <string name="officer_login_error">Invalid Officer ID or Password</string>
+
+    <!-- Water Feature — Admin Dashboard -->
+    <string name="water_dashboard_title">Water Release Dashboard</string>
+    <string name="water_dashboard_subtitle">Logged in as: %1$s</string>
+    <string name="locality_koramangala">Koramangala</string>
+    <string name="locality_indiranagar">Indiranagar</string>
+    <string name="locality_whitefield">Whitefield</string>
+    <string name="locality_jayanagar">Jayanagar</string>
+    <string name="locality_hsr">HSR Layout</string>
+    <string name="locality_current">Current Location (Live)</string>
+    <string name="schedule_water_release">Schedule Water Release</string>
+    <string name="release_time">Release Time</string>
+    <string name="supply_duration">Duration of Supply</string>
+    <string name="optional_note">Note (Optional)</string>
+    <string name="notify_residents">Notify Residents</string>
+    <string name="notification_sent">Notification sent to %1$s residents</string>
+    <string name="my_schedules">My Schedules</string>
+    <string name="view_as_resident">View as Resident</string>
+    <string name="no_schedules_yet">You have not scheduled any water releases yet</string>
+    <string name="time_conflict_title">⚠️ Time Conflict</string>
+    <string name="time_conflict_message">%1$s is already scheduled from %2$s to %3$s.\n\nYour earliest available slot is %3$s.</string>
+
+    <!-- Water Feature — Resident View -->
+    <string name="water_schedule_title">Water Schedule</string>
+    <string name="water_schedule_subtitle">Upcoming water releases across all localities</string>
+    <string name="no_water_schedule">No water release scheduled yet</string>
+    <string name="scheduled_at">Scheduled at: %1$s</string>
+    <string name="duration_label">Duration: %1$s</string>
+
+    <!-- Duration options -->
+    <string name="duration_30_min">30 minutes</string>
+    <string name="duration_1_hour">1 hour</string>
+    <string name="duration_1_5_hours">1.5 hours</string>
+    <string name="duration_2_hours">2 hours</string>
 </resources>

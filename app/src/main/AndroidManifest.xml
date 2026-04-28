@@ -52,6 +52,22 @@
             android:name=".GarbageMapActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".RoleSelectionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".OfficerLoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ResidentWaterActivity"
+            android:exported="false" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

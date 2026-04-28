@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
             startActivity(Intent(requireContext(), GarbageMapActivity::class.java))
         }
         binding.cardWaterUpdates.setOnClickListener {
-            Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
+            startActivity(Intent(requireContext(), RoleSelectionActivity::class.java))
         }
         binding.cardKnowItAll.setOnClickListener {
             Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()

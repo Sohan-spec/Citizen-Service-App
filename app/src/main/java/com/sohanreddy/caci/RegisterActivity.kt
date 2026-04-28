@@ -113,6 +113,7 @@ class RegisterActivity : AppCompatActivity() {
                     "name" to name,
                     "phone" to (currentUser.phoneNumber ?: ""),
                     "address" to address,
+                    "locality" to address,
                     "age" to age,
                     "gender" to gender,
                     "home_lat" to coords.first,
@@ -122,6 +123,9 @@ class RegisterActivity : AppCompatActivity() {
                 )
 
                 firestore.collection("users").document(currentUser.uid).set(payload).await()
+
+                // Subscribe to FCM topic for locality-based water notifications
+                try { FCMHelper.subscribeToLocality(address) } catch (_: Exception) { }
 
                 startActivity(Intent(this@RegisterActivity, HomeActivity::class.java))
                 finish()

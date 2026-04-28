@@ -118,12 +118,10 @@
                         <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:contentDescription="@string/feature_water_updates" android:src="@drawable/ic_water_drop" />
                     </FrameLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="14dp" android:layout_weight="1" android:orientation="vertical">
-                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal">
-                            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/feature_water_updates" android:textColor="@color/caci_text_primary" android:textSize="16sp" android:textStyle="bold" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_chip_coming_soon" android:paddingHorizontal="8dp" android:paddingVertical="2dp" android:text="@string/coming_soon" android:textColor="@color/caci_text_secondary" android:textSize="10sp" android:textStyle="bold" />
-                        </LinearLayout>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/feature_water_updates" android:textColor="@color/caci_text_primary" android:textSize="16sp" android:textStyle="bold" />
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/feature_water_desc" android:textColor="@color/caci_text_secondary" android:textSize="12sp" />
                     </LinearLayout>
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:contentDescription="Open" android:src="@drawable/ic_arrow_forward" android:layout_marginStart="8dp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

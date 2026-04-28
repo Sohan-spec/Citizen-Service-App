@@ -67,6 +67,7 @@ class ProfileFragment : Fragment() {
         val updates = mutableMapOf<String, Any>(
             "name" to name,
             "address" to address,
+            "locality" to address,
             "gender" to gender,
         )
         val age = ageText.toIntOrNull()
@@ -76,6 +77,10 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 firestore.collection("users").document(uid).update(updates).await()
+                // Re-subscribe to locality topic for water notifications
+                if (address.isNotEmpty()) {
+                    try { FCMHelper.subscribeToLocality(address) } catch (_: Exception) { }
+                }
                 Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()

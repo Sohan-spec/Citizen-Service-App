@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/schedule_water_release"
+        android:textColor="@color/caci_text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textLocality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/caci_text_secondary"
+        android:textSize="14sp" />
+
+    <!-- Release Time -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.CACI.InputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/release_time">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editReleaseTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="none"
+            android:paddingVertical="14dp"
+            android:textColor="@color/caci_text_primary"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Duration Dropdown -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutDuration"
+        style="@style/Widget.CACI.ExposedDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:hint="@string/supply_duration">
+
+        <AutoCompleteTextView
+            android:id="@+id/dropdownDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:paddingVertical="14dp"
+            android:textColor="@color/caci_text_primary"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Optional Note -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.CACI.InputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:hint="@string/optional_note">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:paddingVertical="14dp"
+            android:textColor="@color/caci_text_primary"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Notify Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonNotify"
+        style="@style/Widget.CACI.PrimaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/notify_residents" />
+
+</LinearLayout>

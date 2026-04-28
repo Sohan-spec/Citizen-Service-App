@@ -52,4 +52,9 @@
 
     <!-- Existing marker color (untouched) -->
     <color name="caci_truck_marker">#FFFF7043</color>
+
+    <!-- Water Feature -->
+    <color name="caci_water_blue">#FF1565C0</color>
+    <color name="caci_water_blue_light">#FFE3F2FD</color>
+    <color name="caci_water_ripple">#331565C0</color>
 </resources>
