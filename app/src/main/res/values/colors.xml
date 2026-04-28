@@ -32,8 +32,12 @@
 
     <!-- Input Fields -->
     <color name="caci_input_bg">#FFFFFFFF</color>
+    <color name="caci_input_bg_new">#FFF5F5F5</color>
     <color name="caci_input_stroke">#FFC6C5D5</color>
     <color name="caci_input_stroke_focused">#FF000080</color>
+
+    <!-- Officer Info Banner -->
+    <color name="caci_officer_bg">#FFE8EAF6</color>
 
     <!-- Text -->
     <color name="caci_text_primary">#FF191C1D</color>

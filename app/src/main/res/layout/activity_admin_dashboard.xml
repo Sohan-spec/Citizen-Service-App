@@ -6,85 +6,102 @@
     android:background="@color/caci_background"
     android:orientation="vertical">
 
+    <!-- ═══ Gradient Toolbar ═══ -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/caci_primary"
+        android:background="@drawable/bg_navy_toolbar"
         android:minHeight="?attr/actionBarSize"
         android:title="@string/water_dashboard_title"
         android:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white"
         app:navigationIcon="@android:drawable/ic_menu_revert" />
 
-    <!-- Tricolor Stripe -->
+    <!-- ═══ Tricolor Stripe ═══ -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="4dp"
         android:orientation="horizontal">
         <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_secondary" />
         <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/white" />
         <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_tertiary" />
     </LinearLayout>
 
-    <!-- Officer subtitle -->
-    <TextView
-        android:id="@+id/textOfficerInfo"
+    <!-- ═══ Officer Info Banner ═══ -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_officer_info"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="10dp"
-        android:textColor="@color/caci_text_secondary"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.02" />
+        android:paddingVertical="12dp">
 
-    <!-- Action Buttons Row -->
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Officer"
+            android:src="@drawable/ic_officer_badge"
+            app:tint="@color/caci_primary" />
+
+        <TextView
+            android:id="@+id/textOfficerInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:textColor="@color/caci_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02" />
+    </LinearLayout>
+
+    <!-- ═══ Action Buttons Row ═══ -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingBottom="6dp">
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonMySchedules"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.CACI.SecondaryButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
             android:text="@string/my_schedules"
-            android:textColor="@color/caci_primary"
             android:textSize="12sp"
-            app:strokeColor="@color/caci_primary"
-            app:cornerRadius="4dp"
             app:icon="@drawable/ic_water_drop"
-            app:iconSize="16dp"
+            app:iconSize="18dp"
             app:iconTint="@color/caci_primary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonViewAsResident"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.CACI.GreenButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:layout_weight="1"
             android:layout_marginStart="6dp"
             android:text="@string/view_as_resident"
-            android:textColor="@color/caci_tertiary"
             android:textSize="12sp"
-            app:strokeColor="@color/caci_tertiary"
-            app:cornerRadius="4dp"
             app:icon="@drawable/ic_resident_user"
-            app:iconSize="16dp"
-            app:iconTint="@color/caci_tertiary" />
+            app:iconSize="18dp"
+            app:iconTint="@color/white" />
     </LinearLayout>
 
-    <!-- Locality Cards Grid -->
+    <!-- ═══ Locality Cards Grid ═══ -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingTop="4dp">
 
         <!-- Row 1 -->
         <LinearLayout
@@ -94,7 +111,6 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardKoramangala"
-                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -102,18 +118,21 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="4dp"
-                app:strokeColor="@color/caci_border"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="14dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="@string/locality_koramangala" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <View android:layout_width="4dp" android:layout_height="match_parent" android:background="@color/caci_secondary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" app:tint="@color/caci_secondary" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/locality_koramangala" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to manage" android:textColor="@color/caci_hint" android:textSize="10sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardIndiranagar"
-                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -121,12 +140,16 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="4dp"
-                app:strokeColor="@color/caci_border"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="14dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="@string/locality_indiranagar" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <View android:layout_width="4dp" android:layout_height="match_parent" android:background="@color/caci_tertiary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" app:tint="@color/caci_tertiary" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/locality_indiranagar" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to manage" android:textColor="@color/caci_hint" android:textSize="10sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -139,7 +162,6 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardWhitefield"
-                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -147,18 +169,21 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="4dp"
-                app:strokeColor="@color/caci_border"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="14dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="@string/locality_whitefield" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <View android:layout_width="4dp" android:layout_height="match_parent" android:background="@color/caci_primary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" app:tint="@color/caci_primary" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/locality_whitefield" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to manage" android:textColor="@color/caci_hint" android:textSize="10sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardJayanagar"
-                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -166,12 +191,16 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="4dp"
-                app:strokeColor="@color/caci_border"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="14dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="@string/locality_jayanagar" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <View android:layout_width="4dp" android:layout_height="match_parent" android:background="@color/caci_secondary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" app:tint="@color/caci_secondary" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/locality_jayanagar" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to manage" android:textColor="@color/caci_hint" android:textSize="10sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -184,7 +213,6 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardHSR"
-                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -192,18 +220,21 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="4dp"
-                app:strokeColor="@color/caci_border"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="14dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="@string/locality_hsr" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <View android:layout_width="4dp" android:layout_height="match_parent" android:background="@color/caci_tertiary" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="Water" android:src="@drawable/ic_water_drop" app:tint="@color/caci_tertiary" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/locality_hsr" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to manage" android:textColor="@color/caci_hint" android:textSize="10sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardCurrentLocation"
-                style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -211,23 +242,28 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="4dp"
-                app:strokeColor="@color/caci_border"
-                app:strokeWidth="1dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="14dp">
-                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:contentDescription="GPS" android:src="@drawable/ic_gps_location" />
-                    <TextView android:id="@+id/textCurrentLocality" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="@string/locality_current" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <View android:layout_width="4dp" android:layout_height="match_parent" android:background="@color/caci_water_blue" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                        <ImageView android:layout_width="32dp" android:layout_height="32dp" android:contentDescription="GPS" android:src="@drawable/ic_gps_location" app:tint="@color/caci_water_blue" />
+                        <TextView android:id="@+id/textCurrentLocality" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/locality_current" android:textColor="@color/caci_text_primary" android:textSize="13sp" android:textStyle="bold" android:gravity="center" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="Tap to manage" android:textColor="@color/caci_hint" android:textSize="10sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Map Container -->
+    <!-- ═══ Map Container ═══ -->
     <FrameLayout
         android:id="@+id/mapContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="4dp" />
+        android:layout_margin="12dp"
+        android:background="@drawable/bg_card_elevated" />
 
 </LinearLayout>

@@ -3,32 +3,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_auth_header"
     android:padding="24dp">
 
     <ImageView
         android:id="@+id/imageLogo"
-        android:layout_width="104dp"
-        android:layout_height="104dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/bg_logo_circle"
         android:contentDescription="@string/app_name"
+        android:padding="16dp"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toTopOf="@id/textAppName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42" />
+        app:layout_constraintVertical_bias="0.40"
+        android:elevation="8dp" />
 
     <TextView
         android:id="@+id/textAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/app_name"
-        android:textColor="@color/caci_text_primary"
-        android:textSize="28sp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageLogo" />
+
+    <TextView
+        android:id="@+id/textSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/app_subtitle"
+        android:textColor="#BBFFFFFF"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textAppName" />
+
+    <!-- Tricolor bar at bottom -->
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textSubtitle">
+        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_secondary" />
+        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/white" />
+        <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_tertiary" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

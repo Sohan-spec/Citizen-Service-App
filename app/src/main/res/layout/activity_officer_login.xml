@@ -3,90 +3,136 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_auth_gradient"
+    android:background="@color/caci_background"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="40dp"
-        android:paddingBottom="32dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/buttonBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="start"
-            android:layout_marginBottom="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Back"
-            android:padding="4dp"
-            android:src="@android:drawable/ic_menu_revert" />
-
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:contentDescription="@string/app_name"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/app_name"
-            android:textColor="@color/caci_primary"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/officer_login_subtitle"
-            android:textColor="@color/caci_text_secondary"
-            android:textSize="13sp" />
-
-        <com.google.android.material.card.MaterialCardView
+        <!-- ═══ Gradient Header ═══ -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/caci_border"
-            app:strokeWidth="1dp">
+            android:layout_height="260dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_auth_header" />
+
+            <!-- Back Button -->
+            <ImageView
+                android:id="@+id/buttonBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="start|top"
+                android:layout_margin="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_menu_revert"
+                app:tint="@color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:paddingTop="20dp">
+
+                <!-- Logo -->
+                <FrameLayout
+                    android:layout_width="96dp"
+                    android:layout_height="96dp">
+                    <View
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:background="@drawable/bg_logo_circle"
+                        android:elevation="4dp" />
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:elevation="5dp"
+                        android:src="@mipmap/ic_launcher" />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/officer_login_title"
-                    android:textColor="@color/caci_text_primary"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="12dp"
+                    android:text="Officer Portal"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:text="@string/officer_login_subtitle"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- ═══ Tricolor Stripe ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:orientation="horizontal">
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_secondary" />
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/white" />
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_tertiary" />
+        </LinearLayout>
+
+        <!-- ═══ Sign In Card ═══ -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="-32dp"
+            android:layout_marginBottom="32dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="28dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/officer_login_title"
+                    android:textColor="@color/caci_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="Enter your officer credentials"
                     android:textColor="@color/caci_text_secondary"
                     android:textSize="14sp" />
 
+                <!-- Officer ID -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.CACI.InputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:hint="@string/hint_officer_id">
+                    android:layout_marginTop="28dp"
+                    android:hint="@string/hint_officer_id"
+                    app:startIconDrawable="@drawable/ic_officer_badge">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editOfficerId"
@@ -99,13 +145,15 @@
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Password -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.CACI.InputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:hint="@string/hint_officer_password"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:startIconDrawable="@android:drawable/ic_lock_lock">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editPassword"
@@ -133,9 +181,37 @@
                     style="@style/Widget.CACI.PrimaryButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/login_as_officer" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- Security note -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="Secure"
+                android:src="@android:drawable/ic_secure"
+                app:tint="@color/caci_tertiary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Secure Government Access"
+                android:textColor="@color/caci_tertiary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
+
 </ScrollView>

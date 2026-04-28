@@ -4,23 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="28dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Header with water icon -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/schedule_water_release"
-        android:textColor="@color/caci_text_primary"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="Water"
+            android:src="@drawable/ic_water_drop"
+            app:tint="@color/caci_water_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/schedule_water_release"
+            android:textColor="@color/caci_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textLocality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:textColor="@color/caci_text_secondary"
         android:textSize="14sp" />
+
+    <!-- Subtle divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:alpha="0.3"
+        android:background="@color/caci_border" />
 
     <!-- Release Time -->
     <com.google.android.material.textfield.TextInputLayout
@@ -28,7 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="@string/release_time">
+        android:hint="@string/release_time"
+        app:startIconDrawable="@android:drawable/ic_menu_recent_history">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editReleaseTime"
@@ -87,7 +113,7 @@
         style="@style/Widget.CACI.PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:text="@string/notify_residents" />
 
 </LinearLayout>

@@ -6,38 +6,72 @@
     android:background="@color/caci_background"
     android:orientation="vertical">
 
+    <!-- ═══ Gradient Toolbar ═══ -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/caci_primary"
+        android:background="@drawable/bg_water_toolbar"
         android:minHeight="?attr/actionBarSize"
         android:title="@string/water_schedule_title"
         android:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white"
         app:navigationIcon="@android:drawable/ic_menu_revert" />
 
+    <!-- ═══ Tricolor Stripe ═══ -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="4dp"
         android:orientation="horizontal">
         <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_secondary" />
         <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/white" />
         <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_tertiary" />
     </LinearLayout>
 
-    <TextView
+    <!-- ═══ Info Banner ═══ -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_water_banner"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingHorizontal="20dp"
-        android:paddingTop="14dp"
-        android:paddingBottom="4dp"
-        android:text="@string/water_schedule_subtitle"
-        android:textColor="@color/caci_text_secondary"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.02" />
+        android:paddingVertical="14dp">
 
-    <!-- Empty state placeholder -->
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="Water"
+            android:src="@drawable/ic_water_drop"
+            app:tint="@color/caci_water_blue" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="14dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/water_schedule_subtitle"
+                android:textColor="@color/caci_water_blue"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="View your upcoming water supply schedule"
+                android:textColor="@color/caci_text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- ═══ Empty state placeholder ═══ -->
     <LinearLayout
         android:id="@+id/layoutEmpty"
         android:layout_width="match_parent"
@@ -45,27 +79,50 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:padding="40dp"
         android:visibility="visible">
 
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:contentDescription="No schedule"
-            android:src="@drawable/ic_water_drop"
-            android:alpha="0.4" />
+        <!-- Decorative circle behind icon -->
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_water_banner" />
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:contentDescription="No schedule"
+                android:src="@drawable/ic_water_drop"
+                app:tint="@color/caci_water_blue"
+                android:alpha="0.6" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/no_water_schedule"
+            android:textColor="@color/caci_text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Check back later for updates"
             android:textColor="@color/caci_text_secondary"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
-    <!-- Schedule list -->
+    <!-- ═══ Schedule list ═══ -->
     <ScrollView
         android:id="@+id/scrollReleases"
         android:layout_width="match_parent"
@@ -79,7 +136,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
+            android:paddingVertical="12dp" />
     </ScrollView>
 
 </LinearLayout>

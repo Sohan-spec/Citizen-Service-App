@@ -3,60 +3,111 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_auth_gradient"
+    android:background="@color/caci_background"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="32dp">
+        android:orientation="vertical">
 
-        <!-- App Branding Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="@color/caci_primary"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+        <!-- ═══ Gradient Header ═══ -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/app_subtitle"
-            android:textColor="@color/caci_text_secondary"
-            android:textSize="12sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_auth_header" />
 
-        <!-- Registration Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="32dp">
+
+                <!-- Logo with white circle backdrop -->
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="80dp">
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/bg_logo_circle"
+                        android:elevation="4dp" />
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/app_name"
+                        android:elevation="5dp"
+                        android:src="@mipmap/ic_launcher" />
+                </FrameLayout>
+
+                <!-- App Title -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/app_name"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/app_subtitle"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- ═══ Tricolor Stripe ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:orientation="horizontal">
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_secondary" />
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/white" />
+            <View android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:background="@color/caci_tertiary" />
+        </LinearLayout>
+
+        <!-- ═══ Registration Card ═══ -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="-28dp"
+            android:layout_marginBottom="32dp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/caci_border"
-            app:strokeWidth="1dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="28dp">
 
                 <!-- Heading -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/register_title"
-                    android:textColor="@color/caci_text_primary"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/caci_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,7 +124,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:hint="@string/hint_name">
+                    android:hint="@string/hint_name"
+                    app:startIconDrawable="@android:drawable/ic_menu_myplaces">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editName"
@@ -92,7 +144,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:hint="@string/hint_age">
+                    android:hint="@string/hint_age"
+                    app:startIconDrawable="@android:drawable/ic_menu_today">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editAge"
@@ -105,7 +158,7 @@
                         android:textSize="16sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Gender — Material3 Exposed Dropdown -->
+                <!-- Gender — Exposed Dropdown -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layoutGender"
                     style="@style/Widget.CACI.ExposedDropdown"
@@ -130,7 +183,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:hint="@string/hint_address">
+                    android:hint="@string/hint_address"
+                    app:startIconDrawable="@android:drawable/ic_menu_compass">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editAddress"
@@ -149,7 +203,7 @@
                     style="@style/Widget.CACI.PrimaryButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="28dp"
                     android:text="@string/complete_registration" />
 
             </LinearLayout>
