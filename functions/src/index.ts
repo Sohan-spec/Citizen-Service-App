@@ -251,3 +251,37 @@ export const resetDailyAlerts = onSchedule("every day 18:30", async () => {
 
   logger.info("Daily alert flags and truck route reset");
 });
+
+/**
+ * Water Release Notification — triggers when a new document is created
+ * in waterNotifications collection. Sends FCM message to the locality topic.
+ */
+export const sendWaterReleaseNotification = onDocumentWritten(
+  "waterNotifications/{notifId}",
+  async (event) => {
+    const afterData = event.data?.after?.data();
+    if (!afterData) return;
+
+    const topic = String(afterData.topic ?? "");
+    const title = String(afterData.title ?? "Water Supply Alert");
+    const body = String(afterData.body ?? "");
+
+    if (!topic || !body) {
+      logger.warn("Missing topic or body in water notification", {
+        notifId: event.params.notifId,
+      });
+      return;
+    }
+
+    try {
+      await admin.messaging().send({
+        topic: topic,
+        notification: {title, body},
+        data: {type: "water", locality: String(afterData.locality ?? "")},
+      });
+      logger.info("Water release notification sent", {topic, title});
+    } catch (err) {
+      logger.error("Failed to send water notification", {err, topic});
+    }
+  },
+);
